@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+
+    <script>
+        window.onload = function () {
+
+            var options = {
+                title: {
+                    text: "Number of Leads By Customer"
+                },
+                subtitles: [{
+                    text: "As of November, 2017"
+                }],
+                animationEnabled: true,
+                data: [{
+                    type: "pie",
+                    startAngle: 40,
+                    toolTipContent: "<b>{label}</b>: {y}%",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - {y}%",
+                    dataPoints: [
+                    {% for thing in leads %} 
+                    { y: {{ thing['leads'] }}, label: '{{ thing['customer_name'] }}' },
+                    {% endfor %}
+                    ]
+                }]
+                            
+            };
+            $("#chartContainer").CanvasJSChart(options);
+
+        }
+    </script>
+
+
+</head>
+
+<body>
+
+    <h1>List of all customers and Number of leads </h1>
+    <p>-------------------------------------</p>
+
+
+
+    <table>
+        <tr class='titles'>
+            <td>First Name</td>
+            <td>Leads</td>
+        </tr>
+        {% for thing in leads %}
+        <tr>
+            <td>{{thing['customer_name']}}</td>
+            <td>{{thing['leads']}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+    <br>
+    <h2>Customers and Number of New Leads</h2>
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+
+
+</body>
+
+</html>
